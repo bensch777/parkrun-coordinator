@@ -1,0 +1,44 @@
+name: Parkrun Roster Check
+
+on:
+  schedule:
+    # Run every Wednesday at 10:00 UTC (11:00 or 12:00 Local depending on DST)
+    - cron: '0 10 * * 3'
+  workflow_dispatch: # Allow manual triggering
+
+permissions:
+  issues: write
+
+jobs:
+  check-roster:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Roster Check
+        id: roster
+        run: |
+          python check_roster.py --outfile roster_issue_body.md
+
+      - name: Create Issue Notification
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check if the file exists (it might not be created if script fails, but script stops on error)
+          if [ -f roster_issue_body.md ]; then
+             gh issue create \
+               --title "Parkrun Helfer Check: $(date +'%Y-%m-%d')" \
+               --body-file roster_issue_body.md \
+               --label "automation"
+          fi
