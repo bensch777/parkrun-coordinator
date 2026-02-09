@@ -126,13 +126,14 @@ def main():
         print("\nWhatsApp Quick Link (wird geöffnet...):")
         print(link)
         
-        if not outfile:
+    if not outfile:
              webbrowser.open(link)
 
 def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--outfile", help="Write the message and link to this file instead of opening browser")
+    parser.add_argument("--plain", action="store_true", help="Write ONLY the message text to the outfile (no markdown headers)")
     args = parser.parse_args()
 
     url = "https://www.parkrun.com.de/krupundersee/futureroster/"
@@ -145,11 +146,16 @@ def main():
     
     if args.outfile:
         with open(args.outfile, "w", encoding="utf-8") as f:
-            f.write(f"# Parkrun Roster Check: {date}\n\n")
-            f.write(message)
-            f.write("\n\n")
-            f.write(f"**WhatsApp Quick Link**: [Klick mich]({link})\n\n")
-            f.write(f"Raw Link: `{link}`")
+            if args.plain:
+                # Just the raw message for iOS Shortcuts or other automation
+                f.write(message)
+            else:
+                # Markdown format for Issues/Email
+                f.write(f"# Parkrun Roster Check: {date}\n\n")
+                f.write(message)
+                f.write("\n\n")
+                f.write(f"**WhatsApp Quick Link**: [Klick mich]({link})\n\n")
+                f.write(f"Raw Link: `{link}`")
         print(f"Output written to {args.outfile}")
     
     print("\n" + "="*40)
@@ -159,7 +165,6 @@ def main():
     print("="*40)
     
     # Pass outfile arg to handle browser behavior (None if not set)
-    # Refactoring slightly to keep logic clean:
     if not args.outfile and link:
          print("\nWhatsApp Quick Link (wird geöffnet...):")
          print(link)
