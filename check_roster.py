@@ -15,6 +15,16 @@ def get_roster_page(url, proxy=None):
     }
     proxies = None
     if proxy:
+        # Handle "host:port:user:pass" format commonly provided by proxy services
+        if "://" not in proxy and proxy.count(":") == 3:
+            parts = proxy.split(":")
+            host = parts[0]
+            port = parts[1]
+            user = parts[2]
+            password = parts[3]
+            proxy = f"http://{user}:{password}@{host}:{port}"
+            print(f"Formatted proxy to: http://{user}:***@{host}:{port}")
+        
         proxies = {"http": proxy, "https": proxy}
         print(f"Using proxy: {proxy}")
         
