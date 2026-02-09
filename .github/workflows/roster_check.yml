@@ -41,5 +41,5 @@ jobs:
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Update roster message"
+          commit_message: "Update roster message [skip ci]"
           file_pattern: latest_message.txt
