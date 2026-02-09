@@ -27,9 +27,16 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Roster Check
+        env:
+          ROSTER_PROXY: ${{ secrets.ROSTER_PROXY }}
         run: |
-          # Generate the raw message file
-          python check_roster.py --outfile latest_message.txt --plain
+          # Generate the raw message file using the proxy if set
+          if [ -n "$ROSTER_PROXY" ]; then
+            python check_roster.py --outfile latest_message.txt --plain --proxy "$ROSTER_PROXY"
+          else
+            echo "Warning: No ROSTER_PROXY secret set. Attempting direct connection..."
+            python check_roster.py --outfile latest_message.txt --plain
+          fi
 
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v4
