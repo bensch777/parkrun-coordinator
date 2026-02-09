@@ -2,12 +2,9 @@ name: Parkrun Roster Check
 
 on:
   schedule:
-    # Run every Wednesday at 10:00 UTC (11:00 or 12:00 Local depending on DST)
+    # Run every Wednesday at 10:00 UTC
     - cron: '0 10 * * 3'
-  workflow_dispatch: # Allow manual triggering
-
-permissions:
-  issues: write
+  workflow_dispatch:
 
 jobs:
   check-roster:
@@ -31,14 +28,24 @@ jobs:
         run: |
           python check_roster.py --outfile roster_issue_body.md
 
-      - name: Create Issue Notification
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Check if the file exists (it might not be created if script fails, but script stops on error)
-          if [ -f roster_issue_body.md ]; then
-             gh issue create \
-               --title "Parkrun Helfer Check: $(date +'%Y-%m-%d')" \
-               --body-file roster_issue_body.md \
-               --label "automation"
-          fi
+      - name: Send Email Notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # Required mail server address:
+          server_address: smtp.gmail.com
+          # Server port, default 25:
+          server_port: 465
+          # Optional (recommended): mail server username:
+          username: ${{ secrets.MAIL_USERNAME }}
+          # Optional (recommended): mail server password:
+          password: ${{ secrets.MAIL_PASSWORD }}
+          # Required mail subject:
+          subject: Parkrun Helfer Check
+          # Required recipients addresses:
+          to: ${{ secrets.MAIL_USERNAME }} # Sending to self by default
+          # Required sender full name (optional):
+          from: Parkrun Bot
+          # Optional plain body:
+          body: file://roster_issue_body.md
+          # Optional priority: 'low', 'normal' (default) or 'high'
+          priority: normal
