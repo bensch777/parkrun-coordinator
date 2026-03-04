@@ -8,7 +8,6 @@ Folgende Positionen sind noch offen:
 - Einweisung für Erstläufer*innen
 - Zeitnahme
 - Zielmarkenausgabe
-- Barcode einlesen
 - parkwalker
 - Schlussbegleitung
 
