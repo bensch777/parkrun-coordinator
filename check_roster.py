@@ -71,7 +71,7 @@ def parse_roster(html_content):
         role_name = role_cell.get_text(strip=True)
         
         # Skip excluded roles
-        if role_name in ["Fotos", "Berichterstattung"]:
+        if role_name in ["Fotos", "Berichterstattung", "parkwalker"]:
             continue
             
         # Handle Streckenposten (only the first one, rename it)
