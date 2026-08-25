@@ -6,8 +6,6 @@ Folgende Positionen sind noch offen:
 - Laufleitung
 - Streckenprüfung am parkrun-Tag
 - Ausrüstung Aufbau
-- Streckenposten (Seegrabenweg)
-- Einweisung für Erstläufer*innen
 - Zeitnahme
 - Zielmarkenausgabe
 - Barcode einlesen
