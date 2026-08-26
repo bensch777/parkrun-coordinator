@@ -7,7 +7,6 @@ Folgende Positionen sind noch offen:
 - Streckenprüfung am parkrun-Tag
 - Ausrüstung Aufbau
 - Zeitnahme
-- Zielmarkenausgabe
 - Barcode einlesen
 
 Wer hat Zeit und Lust uns zu unterstützen? 🙌
