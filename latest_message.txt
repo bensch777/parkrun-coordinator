@@ -6,7 +6,6 @@ Folgende Positionen sind noch offen:
 - Laufleitung
 - Streckenposten (Seegrabenweg)
 - Zeitnahme
-- Zielmarkenausgabe
 - Barcode einlesen
 - Schlussbegleitung
 
